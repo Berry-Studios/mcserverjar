@@ -77,14 +77,14 @@
       </div>
       <div class="nav">
         <ul>
-          <li><a href="index.html" style="color: #ff0000" ><i class="fas fa-home"></i> Home</a></li>
+          <li><a href="index.html" style="color: #ff0000"><i class="fas fa-home"></i> Home</a></li>
           <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
           <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
         </ul>
       </div>
       <div class="mobile-nav">
         <ul>
-          <li><a href="index.html" style="color: #ff0000" ><i class="fas fa-home"></i> Home</a></li>
+          <li><a href="index.html" style="color: #ff0000"><i class="fas fa-home"></i> Home</a></li>
           <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
           <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
         </ul>
@@ -158,7 +158,7 @@
           </p>
           <br>
           <p>
-            If you would like to support us, you can make a donation through our <a href="https://www.patreon.com/mcjar" style="text-decoration: none; color:rgb(255, 0, 0);">PATREON</a> page. Every little bit helps us provide the best possible service for our users. Thank you for your support!
+            If you would like to support us, you can make a contact us through <a href="contact.html" style="text-decoration: none; color:rgb(255, 0, 0);">CONTACT</a> page. Every little bit helps us provide the best possible service for our users. Thank you for your support!
           </p>
         </div>
         <div class="question">
@@ -336,6 +336,33 @@
           // Append the pagination div after the features element
           featuresDiv.parentNode.insertBefore(paginationDiv, featuresDiv.nextSibling);
 
+          // Function to create download links
+          function createDownloadLink(url, text) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.textContent = text;
+            a.style.borderRadius = '20px';
+            a.style.padding = '10px';
+            a.style.border = '2px solid var(--support-button-background-color)';
+            a.style.textDecoration = 'none';
+            a.style.color = 'var(--support-button-text-color)';
+            a.style.display = 'inline-flex';
+            a.style.alignItems = 'center';
+            a.style.position = 'relative';
+
+            // Add hover effect
+            a.addEventListener('mouseover', function() {
+              this.style.borderColor = 'var(--support-button-hover-background-color)';
+              this.style.color = 'var(--support-button-hover-text-color)';
+            });
+            a.addEventListener('mouseout', function() {
+              this.style.borderColor = 'var(--support-button-background-color)';
+              this.style.color = 'var(--support-button-text-color)';
+            });
+
+            return a;
+          }
+
           // Function to create cards for a page
           function createCardsForPage(page) {
             // Clear the cardsDiv
@@ -368,27 +395,6 @@
               h3.textContent = version;
               h3.style.color = 'var(--navbar-text-hover-color)';
               h3.style.marginBottom = '0';
-              const a = document.createElement('a');
-              a.href = versionData?.latest?.jarUrl;
-              a.textContent = 'DOWNLOAD';
-              a.style.borderRadius = '20px';
-              a.style.padding = '10px';
-              a.style.border = '2px solid var(--support-button-background-color)';
-              a.style.textDecoration = 'none';
-              a.style.color = 'var(--support-button-text-color)';
-              a.style.display = 'inline-flex';
-              a.style.alignItems = 'center';
-              a.style.position = 'relative';
-
-              // Add hover effect
-              a.addEventListener('mouseover', function() {
-                this.style.borderColor = 'var(--support-button-hover-background-color)';
-                this.style.color = 'var(--support-button-hover-text-color)';
-              });
-              a.addEventListener('mouseout', function() {
-                this.style.borderColor = 'var(--support-button-background-color)';
-                this.style.color = 'var(--support-button-text-color)';
-              });
 
               const typeP = document.createElement('p');
               typeP.textContent = versionData.type?.toUpperCase() ? versionData.type.toUpperCase() : '';
@@ -430,7 +436,47 @@
               bodyDiv.insertBefore(supportedP, typeP.nextSibling); // Insert the supported sticker after the type sticker
               bodyDiv.appendChild(createdP);
               bodyDiv.appendChild(buildsP);
-              bodyDiv.appendChild(a);
+              if (versionData?.latest?.jarUrl && versionData?.latest?.zipUrl) {
+                // Create two separate download links
+                const jarLink = createDownloadLink(versionData.latest.jarUrl, 'DOWNLOAD JAR');
+                const zipLink = createDownloadLink(versionData.latest.zipUrl, 'DOWNLOAD ZIP');
+
+                // Append both links to the card body
+                bodyDiv.appendChild(jarLink);
+                bodyDiv.appendChild(zipLink);
+              } else if (versionData?.latest?.jarUrl) {
+                // Only jarUrl is present
+                const jarLink = createDownloadLink(versionData.latest.jarUrl, 'DOWNLOAD JAR');
+                bodyDiv.appendChild(jarLink);
+              } else if (versionData?.latest?.zipUrl) {
+                // Only zipUrl is present
+                const zipLink = createDownloadLink(versionData.latest.zipUrl, 'DOWNLOAD ZIP');
+                bodyDiv.appendChild(zipLink);
+              } else {
+                const a = document.createElement('a');
+                a.href = versionData?.latest?.jarUrl ? versionData?.latest?.jarUrl : versionData?.latest?.zipUrl ? versionData?.latest?.zipUrl : 'https://rjns.dev';
+                a.textContent = 'DOWNLOAD';
+                a.style.borderRadius = '20px';
+                a.style.padding = '10px';
+                a.style.border = '2px solid var(--support-button-background-color)';
+                a.style.textDecoration = 'none';
+                a.style.color = 'var(--support-button-text-color)';
+                a.style.display = 'inline-flex';
+                a.style.alignItems = 'center';
+                a.style.position = 'relative';
+
+                // Add hover effect
+                a.addEventListener('mouseover', function() {
+                  this.style.borderColor = 'var(--support-button-hover-background-color)';
+                  this.style.color = 'var(--support-button-hover-text-color)';
+                });
+                a.addEventListener('mouseout', function() {
+                  this.style.borderColor = 'var(--support-button-background-color)';
+                  this.style.color = 'var(--support-button-text-color)';
+                });
+
+                bodyDiv.appendChild(a);
+              }
 
               cardDiv.appendChild(headerDiv);
               cardDiv.appendChild(bodyDiv);
@@ -581,6 +627,40 @@
             }
           }
 
+          // Create a div and apply flexbox styles to center its contents
+          const div = document.createElement('div');
+          div.style.display = 'flex';
+          div.style.justifyContent = 'center';
+          div.style.alignItems = 'center';
+
+          // Create the "Go Back" button
+          const a = document.createElement('a');
+          a.href = 'index.html';
+          a.textContent = 'GO BACK';
+          a.style.borderRadius = '20px';
+          a.style.padding = '10px';
+          a.style.border = '2px solid var(--support-button-background-color)';
+          a.style.textDecoration = 'none';
+          a.style.color = 'var(--support-button-text-color)';
+          a.style.display = 'inline-flex';
+          a.style.justifyContent = 'center';
+          a.style.position = 'relative';
+
+          // Add hover effect
+          a.addEventListener('mouseover', function() {
+            this.style.borderColor = 'var(--support-button-hover-background-color)';
+            this.style.color = 'var(--support-button-hover-text-color)';
+          });
+          a.addEventListener('mouseout', function() {
+            this.style.borderColor = 'var(--support-button-background-color)';
+            this.style.color = 'var(--support-button-text-color)';
+          });
+
+          div.appendChild(a);
+
+          // add at the end of paginationDiv and whatever comes after it which is basically the Page 1 of 100
+          paginationDiv.parentNode.insertBefore(div, paginationDiv.nextSibling.nextSibling);
+
         } else {
           const h2 = document.createElement('h2');
           h2.textContent = 'ERROR';
@@ -592,7 +672,7 @@
           featuresDiv.parentNode.insertBefore(h2, featuresDiv);
 
           const p = document.createElement('p');
-          p.textContent = data.errors[0];
+          p.textContent = data?.errors[0] || 'An unknown error occurred. Please try again later. If the issue persists, please contact support.';
           p.style.textAlign = 'center';
           featuresDiv.parentNode.insertBefore(p, featuresDiv);
 
@@ -631,44 +711,90 @@
     fetch('https://mc.rjns.dev/api/v1/types')
       .then(response => response.json())
       .then(data => {
-        // Create a new h2 element and insert it before the featuresDiv
-        const h2 = document.createElement('h2');
-        h2.textContent = 'CHOOSE YOUR TYPE';
-        h2.style.textAlign = 'center';
-        h2.style.color = 'var(--main-color)';
-        h2.style.fontSize = '2rem';
-        h2.style.fontWeight = '600';
-        h2.style.margin = '40px 0';
-        featuresDiv.parentNode.insertBefore(h2, featuresDiv);
+        if (data.success) {
+          // Create a new h2 element and insert it before the featuresDiv
+          const h2 = document.createElement('h2');
+          h2.textContent = 'CHOOSE YOUR TYPE';
+          h2.style.textAlign = 'center';
+          h2.style.color = 'var(--main-color)';
+          h2.style.fontSize = '2rem';
+          h2.style.fontWeight = '600';
+          h2.style.margin = '40px 0';
+          featuresDiv.parentNode.insertBefore(h2, featuresDiv);
 
-        // Create a new div to wrap the cards and apply the flex styles to it
-        const cardsDiv = document.createElement('div');
-        cardsDiv.style.display = 'flex'; // Use Flexbox
-        cardsDiv.style.flexWrap = 'wrap'; // Allow the items to wrap as needed
-        cardsDiv.style.justifyContent = 'space-around'; // Distribute items evenly along the line
-        featuresDiv.appendChild(cardsDiv);
+          // Create a new div to wrap the cards and apply the flex styles to it
+          const cardsDiv = document.createElement('div');
+          cardsDiv.style.display = 'flex'; // Use Flexbox
+          cardsDiv.style.flexWrap = 'wrap'; // Allow the items to wrap as needed
+          cardsDiv.style.justifyContent = 'space-around'; // Distribute items evenly along the line
+          featuresDiv.appendChild(cardsDiv);
 
-        for (const type in data.types) {
-          const cardDiv = document.createElement('div');
-          cardDiv.className = 'card';
-          cardDiv.style.width = window.innerWidth < 600 ? '100%' : 'calc(30% - 20px)'; // Set a fixed width for the cards
-          cardDiv.style.margin = '10px'; // Add some margin to the cards
+          for (const type in data.types) {
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'card';
+            cardDiv.style.width = window.innerWidth < 600 ? '100%' : 'calc(30% - 20px)'; // Set a fixed width for the cards
+            cardDiv.style.margin = '10px'; // Add some margin to the cards
 
-          const headerDiv = document.createElement('div');
-          headerDiv.className = 'card-header';
-          const iconImg = document.createElement('img');
-          iconImg.src = data.types[type].icon;
-          iconImg.style.maxWidth = '100%'; // Make the image responsive
-          iconImg.style.height = 'auto'; // Keep the aspect ratio of the image
-          headerDiv.appendChild(iconImg);
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'card-header';
+            const iconImg = document.createElement('img');
+            iconImg.src = data.types[type].icon;
+            iconImg.style.maxWidth = '100%'; // Make the image responsive
+            iconImg.style.height = 'auto'; // Keep the aspect ratio of the image
+            headerDiv.appendChild(iconImg);
 
-          const bodyDiv = document.createElement('div');
-          bodyDiv.className = 'card-body';
-          const h3 = document.createElement('h3');
-          h3.textContent = data.types[type].name;
+            const bodyDiv = document.createElement('div');
+            bodyDiv.className = 'card-body';
+            const h3 = document.createElement('h3');
+            h3.textContent = data.types[type].name;
+            const a = document.createElement('a');
+            a.href = `index.html?type=${type}`;
+            a.textContent = 'CHECK NOW';
+            a.style.borderRadius = '20px';
+            a.style.padding = '10px';
+            a.style.border = '2px solid var(--support-button-background-color)';
+            a.style.textDecoration = 'none';
+            a.style.color = 'var(--support-button-text-color)';
+            a.style.display = 'inline-flex';
+            a.style.alignItems = 'center';
+            a.style.position = 'relative';
+
+            // Add hover effect
+            a.addEventListener('mouseover', function() {
+              this.style.borderColor = 'var(--support-button-hover-background-color)';
+              this.style.color = 'var(--support-button-hover-text-color)';
+            });
+            a.addEventListener('mouseout', function() {
+              this.style.borderColor = 'var(--support-button-background-color)';
+              this.style.color = 'var(--support-button-text-color)';
+            });
+
+            bodyDiv.appendChild(h3);
+            bodyDiv.appendChild(a);
+
+            cardDiv.appendChild(headerDiv);
+            cardDiv.appendChild(bodyDiv);
+
+            cardsDiv.appendChild(cardDiv);
+          }
+        } else {
+          const h2 = document.createElement('h2');
+          h2.textContent = 'ERROR';
+          h2.style.textAlign = 'center';
+          h2.style.color = 'var(--main-color)';
+          h2.style.fontSize = '2rem';
+          h2.style.fontWeight = '600';
+          h2.style.margin = '40px 0';
+          featuresDiv.parentNode.insertBefore(h2, featuresDiv);
+
+          const p = document.createElement('p');
+          p.textContent = data?.errors[0] || 'An unknown error occurred. Please try again later. If the issue persists, please contact support.';
+          p.style.textAlign = 'center';
+          featuresDiv.parentNode.insertBefore(p, featuresDiv);
+
           const a = document.createElement('a');
-          a.href = `index.html?type=${type}`;
-          a.textContent = 'CHECK NOW';
+          a.href = `index.html`;
+          a.textContent = 'GO BACK';
           a.style.borderRadius = '20px';
           a.style.padding = '10px';
           a.style.border = '2px solid var(--support-button-background-color)';
@@ -688,13 +814,12 @@
             this.style.color = 'var(--support-button-text-color)';
           });
 
-          bodyDiv.appendChild(h3);
-          bodyDiv.appendChild(a);
+          const buttonDiv = document.createElement('div');
+          buttonDiv.style.display = 'flex';
+          buttonDiv.style.justifyContent = 'center';
+          buttonDiv.appendChild(a);
 
-          cardDiv.appendChild(headerDiv);
-          cardDiv.appendChild(bodyDiv);
-
-          cardsDiv.appendChild(cardDiv);
+          featuresDiv.parentNode.insertBefore(buttonDiv, featuresDiv);
         }
       });
 
